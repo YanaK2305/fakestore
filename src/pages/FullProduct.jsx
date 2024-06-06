@@ -1,16 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { fetchFullProduct } from "../redux/slices/fullProductReducer";
+import FullProductSkeleton from "../loading/FullProductSkeleton";
 
 export default function FullProduct() {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [product, setProduct] = useState({ rating: { rate: "", count: "" } });
+  const { product, loading, error } = useSelector((state) => state.product);
   useEffect(() => {
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .then((json) => setProduct(json.data));
+    dispatch(fetchFullProduct(id));
   }, []);
   console.log(product);
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+  if (loading) {
+    return <FullProductSkeleton />;
+  }
   return (
     <div className="fp">
       <Link to={"/"}>

@@ -1,7 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveFilter } from "../redux/slices/filterReducer";
 
-export default function Filters({ activeFilter, setActiveFilter }) {
+export default function Filters() {
+  const dispatch = useDispatch();
+  const { activeFilter } = useSelector((state) => state.filter);
   const [filters, setFilters] = useState([]);
   useEffect(() => {
     axios
@@ -18,7 +22,7 @@ export default function Filters({ activeFilter, setActiveFilter }) {
               activeFilter === item ? "filter__btn active" : "filter__btn"
             }
             key={index}
-            onClick={() => setActiveFilter(item)}
+            onClick={() => dispatch(setActiveFilter(item))}
           >
             {item}
           </button>

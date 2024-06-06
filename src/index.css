@@ -239,3 +239,7 @@ code {
   border-radius: 10px;
   padding: 5px 10px;
 }
+.error {
+  color: red;
+  text-align: center;
+}

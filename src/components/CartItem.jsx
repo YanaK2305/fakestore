@@ -1,11 +1,13 @@
 import React from "react";
-
-export default function CartItem({
-  item,
+import { useDispatch } from "react-redux";
+import {
   addToCart,
-  minusCartItem,
   deleteCartItem,
-}) {
+  minusCartItem,
+} from "../redux/slices/cartReducer";
+
+export default function CartItem({ item }) {
+  const dispatch = useDispatch();
   return (
     <div className="cart__body">
       <div className="cart__left">
@@ -17,18 +19,21 @@ export default function CartItem({
           <button
             class="minus"
             disabled={item.count === 1}
-            onClick={() => minusCartItem(item)}
+            onClick={() => dispatch(minusCartItem(item))}
           >
             -
           </button>
           <span class="value">{item.count}</span>
-          <button class="plus" onClick={() => addToCart(item)}>
+          <button class="plus" onClick={() => dispatch(addToCart(item))}>
             +
           </button>
         </div>
         <div className="cart__info">
           <span className="cart__price">{item.price}₽</span>
-          <button className="cart__del" onClick={() => deleteCartItem(item)}>
+          <button
+            className="cart__del"
+            onClick={() => dispatch(deleteCartItem(item))}
+          >
             x
           </button>
         </div>

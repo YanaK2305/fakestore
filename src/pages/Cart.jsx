@@ -2,22 +2,12 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "../redux/slices/cartReducer";
 
-export default function Cart({
-  cartArr,
-  clearCart,
-  addToCart,
-  minusCartItem,
-  deleteCartItem,
-}) {
-  function getFullPrice() {
-    let sum = 0;
-    cartArr.forEach((element) => {
-      sum += element.price * element.count;
-    });
-    return sum;
-  }
-  const fullPrice = getFullPrice();
+export default function Cart() {
+  const dispatch = useDispatch();
+  const { cartArr, fullPrice } = useSelector((state) => state.cart);
   return (
     <div>
       <h1>Корзина</h1>
@@ -25,22 +15,14 @@ export default function Cart({
         <Link to={"/"}>
           <button className={"filter__btn"}>Главная</button>
         </Link>
-        <button className="cart__clear" onClick={clearCart}>
+        <button className="cart__clear" onClick={() => dispatch(clearCart())}>
           Очистить корзину
         </button>
       </div>
       {/* ссылка для перехода между страницами */}
       <div className="cart__container">
         {cartArr.map((item) => {
-          return (
-            <CartItem
-              item={item}
-              key={item.id}
-              addToCart={addToCart}
-              minusCartItem={minusCartItem}
-              deleteCartItem={deleteCartItem}
-            />
-          );
+          return <CartItem item={item} key={item.id} />;
         })}
       </div>
       <div className="cart__bottom">
